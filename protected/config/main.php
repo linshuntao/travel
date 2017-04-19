@@ -12,7 +12,7 @@ return array(
     // preloading 'log' component
     'preload'           => array('log'),
 
-    'defaultController' => 'index/baseData/index',
+    'defaultController' => 'ShowData/BaseData/index',
 
     // autoloading model and component classes
     'import'            => array(

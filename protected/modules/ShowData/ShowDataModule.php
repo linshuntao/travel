@@ -17,11 +17,11 @@ class ShowDataModule extends CWebModule
 	public function beforeControllerAction($controller, $action)
 	{
 		//加载网站公共的头部和尾部
-		$this->layout = 'ShowData.views.layouts.main';
+		//$this->layout = 'ShowData.views.layouts.main';
 		if (parent::beforeControllerAction($controller, $action)) {
 			// this method is called before any module controller action is performed
 			// you may place customized code here
-			$controller->layout = '/layouts/main';
+			//$controller->layout = '/layouts/main';
 			return true;
 		} else
 			return false;

@@ -6,7 +6,7 @@
  * Date: 2017/4/16
  * Time: 21:40
  */
-class BaseMysql
+class Common
 {
     /**
      * 列表数据
@@ -53,7 +53,10 @@ class BaseMysql
     /**
      * 单条数据
      */
-    public static function getTableItem($table = '', $select = '*', $condition = '', $params = array(), $order = '')
+    public static function getTableItem($table = ''
+
+
+        , $select = '*', $condition = '', $params = array(), $order = '')
     {
         $command = Yii::app()->db->createCommand();
         $command->select($select);

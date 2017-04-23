@@ -7,8 +7,28 @@
  */
 class BaseDataController extends CController
 {
+    //加载界面
     public function actionIndex()
     {
-        $this->render('index');
+        $type='';
+        $cityData=[
+            'name'=>'',
+        ];
+        $this->renderPartial('index',['type'=>$type,'cityData'=>$cityData]);
+    }
+    //接收搜索词
+    public function actionSearch()
+    {
+        $city=Yii::app()->request->getParam('searchWord');
+        if($city!=''){
+            $cityData=TravelCityData::getCityBaseData($city);
+            $this->renderPartial('index',['type'=>0,'cityData'=>$cityData]);
+        }else{
+            $type='';
+            $cityData=[
+                'name'=>'',
+            ];
+            $this->renderPartial('index',['type'=>$type,'cityData'=>$cityData]);
+        }
     }
 }

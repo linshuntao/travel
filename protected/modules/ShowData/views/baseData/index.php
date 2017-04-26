@@ -85,6 +85,7 @@
                         <i class="fa fa-bars"></i>
                         </span>
                 </div>
+                &nbsp;
                 <div class="widget">
                     <h4 class="title"></h4>
                     <div class="content download">
@@ -101,18 +102,21 @@
                                 href="<?php if($type==0){echo Yii::app()->createUrl('ShowData/BaseData/search/searchWord/'.$cityData['name']);} ?>">基础信息</a></li>
                         <li role="presentation"><a href="#" title="美食信息">美食信息</a>
                         </li>
-                        <li role="presentation"><a href="#" title="游客评论"
-                            >游客评论</a></li>
-                        <li role="presentation"><a href="#" title="著名景点"
-
-
-                            >著名景点</a></li>
+                        <li role="presentation"><a href="#" title="游客评论">游客评论</a></li>
+                        <li role="presentation"><a href="#" title="著名景点">著名景点</a></li>
 
                     </ul>
                 </div>
 
             </div>
+
         </div>
+        <?php if($type==1): ?>
+        <div style="border:1px solid black; margin: 1cm 1cm 1cm 1cm ">
+            <h2 style="margin: 1cm 20cm 1cm 1cm"><?=$cityData['name']?></h2>
+            <h5 style="margin: -1.5cm 13cm 1cm 1cm"><?=$cityData['address']?></h5>
+        </div>
+        <?php endif;?>
     </div>
 </nav>
 <!-- end navigation -->

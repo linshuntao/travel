@@ -22,7 +22,7 @@ class BaseDataController extends CController
         $city=Yii::app()->request->getParam('searchWord');
         if($city!=''){
             $cityData=TravelCityData::getCityBaseData($city);
-            $this->renderPartial('index',['type'=>0,'cityData'=>$cityData]);
+            $this->renderPartial('index',['type'=>1,'cityData'=>$cityData]);
         }else{
             $type='';
             $cityData=[

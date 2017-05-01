@@ -11,11 +11,11 @@
     <meta name="generator" content="Ghost 0.7">
     <meta name="referrer" content="origin">
 
-    <link rel="stylesheet" href="<?php echo Yii::app()->request->baseUrl ?>/statics/Index/css/bootstrap.min.css">
-    <link rel="stylesheet" href="<?php echo Yii::app()->request->baseUrl ?>/statics/Index/css/font-awesome.min.css">
-    <link rel="stylesheet" href="<?php echo Yii::app()->request->baseUrl ?>/statics/Index/css/vs.min.css">
+    <link rel="stylesheet" href="<?php echo Yii::app()->request->baseUrl; ?>/statics/Index/css/bootstrap.min.css">
+    <link rel="stylesheet" href="<?php echo Yii::app()->request->baseUrl; ?>/statics/Index/css/font-awesome.min.css">
+    <link rel="stylesheet" href="<?php echo Yii::app()->request->baseUrl; ?>/statics/Index/css/vs.min.css">
     <link rel="stylesheet" type="text/css"
-          href="<?php echo Yii::app()->request->baseUrl ?>/statics/Index/css/screen.css">
+          href="<?php echo Yii::app()->request->baseUrl; ?>/statics/Index/css/screen.css">
     <style id="fit-vids-style">.fluid-width-video-wrapper {
             width: 100%;
             position: relative;
@@ -32,14 +32,14 @@
     </style>
 
     <script type="text/javascript" charset="utf-8"
-            src="<?php echo Yii::app()->request->baseUrl . '/protected/library/ueditor/ueditor.config.js' ?>"></script>
+            src="<?php echo Yii::app()->request->baseUrl . '/protected/library/ueditor/ueditor.config.js'; ?>"></script>
     <script type="text/javascript" charset="utf-8"
-            src="<?php echo Yii::app()->request->baseUrl . '/protected/library/ueditor/ueditor.all.min.js' ?>"></script>
+            src="<?php echo Yii::app()->request->baseUrl . '/protected/library/ueditor/ueditor.all.min.js'; ?>"></script>
     <script>
         var _hmt = _hmt || [];
     </script>
     <script type="text/javascript"
-            src="<?php echo Yii::app()->request->baseUrl ?>/statics/Index/js/ghost-url.min.js"></script>
+            src="<?php echo Yii::app()->request->baseUrl; ?>/statics/Index/js/ghost-url.min.js"></script>
     <script type="text/javascript">
         ghost.init({
             clientId: "ghost-frontend",
@@ -91,38 +91,43 @@
                     <div class="content download">
                         <form action="<?php echo $this->createUrl('baseData/search'); ?>" method="post">
                             <label>请输入景点名：</label>
-                            <input type="text" id="searchInput" name="searchWord">
+                            <input type="text" id="searchInput" value="<?=($cityName) ? $cityName : '';?>" name="searchWord">
                             <button class="btn" style="margin-left: 8%" onclick="searchNews()">搜索</button>
                         </form>
                     </div>
                 </div>
                 <div class="collapse navbar-collapse" id="main-menu">
                     <ul class="menu">
-                        <li class="nav-current" role="presentation">
-                            <a href="<?php echo Yii::app()->createUrl('ShowData/BaseData/search/searchWord/'.$cityName); ?>">基础信息</a>
+                        <li <?php if ($type == 1): ?>class="nav-current"<?php endif;?> role="presentation">
+                            <a href="<?php echo Yii::app()->createUrl('ShowData/BaseData/search/searchWord/' . $cityName); ?>">基础信息</a>
                         </li>
-                        <li role="presentation">
-                            <a href="<?php echo Yii::app()->createUrl('ShowData/BaseData/food/cityName/'.$cityName); ?>" title="美食信息">美食信息</a>
+                        <li <?php if ($type == 2): ?>class="nav-current"<?php endif;?> role="presentation">
+                            <a href="<?php echo Yii::app()->createUrl('ShowData/BaseData/food/cityName/' . $cityName); ?>" title="美食信息">美食信息</a>
                         </li>
-                        <li role="presentation"><a href="#" title="游客评论">游客评论</a></li>
+                        <li <?php if ($type == 3): ?>class="nav-current"<?php endif;?> role="presentation">
+                            <a href="<?php echo Yii::app()->createUrl('ShowData/BaseData/remark/cityName/' . $cityName); ?>" title="游客评论">游客评论</a>
+                        </li>
+                        <li <?php if ($type == 4): ?>class="nav-current"<?php endif;?> role="presentation">
+                            <a href="<?php echo Yii::app()->createUrl('ShowData/BaseData/picture/cityName/' . $cityName); ?>" title="精选图片">精选图片</a>
+                        </li>
                         <li role="presentation"><a href="#" title="著名景点">著名景点</a></li>
 
                     </ul>
                 </div>
-
             </div>
 
         </div>
-        <?php if($type==1): ?>
+
+        <?php if ($type == 1): ?>
         <div style="border:1px solid black; margin: 1cm 1cm 1cm 1cm;height: 15cm"  >
-            <h2 style="margin: 1cm 20cm 1cm 1cm"><?=$cityData['name']?></h2>
-            <h5 style="margin: -1.5cm 10cm 1cm 1cm"><?=$cityData['address']?></h5>
+            <h2 style="margin: 1cm 20cm 1cm 1cm"><?=$cityData['name'];?></h2>
+            <h5 style="margin: -1.5cm 10cm 1cm 1cm"><?=$cityData['address'];?></h5>
             <div style="margin: 2cm 0cm 1cm 1cm">
                 <div class="col-md-2">
                     <h5>大家印象：</h5>
                 </div>
                 <div class="col-md-8">
-                    <label><?=$cityData['impression']?></label>
+                    <label><?=$cityData['impression'];?></label>
                 </div>
             </div>
             <div style="margin: 4cm 1cm 1cm 1cm">
@@ -130,20 +135,22 @@
                     <h5>更多：</h5>
                 </div>
                 <div class="col-md-8">
-                    <label><?=$cityData['moreDesc']?></label>
+                    <label><?=$cityData['moreDesc'];?></label>
                 </div>
             </div>
         </div>
         <?php endif;?>
-        <?php if($type==2): ?>
+
+
+        <?php if ($type == 2 && $foodData): ?>
             <div style="border:1px solid black; margin: 1cm 1cm 1cm 1cm;height: 20cm">
-                <h3 style="margin: 1cm 20cm 1cm 1cm"><?=$foodData[1]['name']?></h3>
+                <h3 style="margin: 1cm 20cm 1cm 1cm"><?=$foodData['name'];?></h3>
                 <div style="margin: 1cm 0cm 1cm 1cm">
                     <div class="col-md-2">
                         <h4>美食描述：</h4>
                     </div>
                     <div class="col-md-8">
-                        <label><?=$foodData[1]['content']?></label>
+                        <label><?=$foodData['content'];?></label>
                     </div>
                 </div>
                 <div style="margin: 4cm 1cm 1cm 1cm">
@@ -151,11 +158,81 @@
                         <h4>美食图片：</h4>
                     </div>
                     <div class="col-md-8">
-                        <img src="<?=$foodData[1]['foodPic']?>" height="400px">
+                        <img src="<?=$foodData['foodPic'];?>" height="400px">
+                    </div>
+                </div>
+                <div style="margin: 1cm 5cm 1cm 1cm">
+                    <div class="col-md-12">
+                        &nbsp;
+                        <?php
+$this->widget('CLinkPager', ['pages' => $pages,
+    'header'                             => '',
+    'htmlOptions'                        => ['class' => 'pagination pagination-m'],
+    'selectedPageCssClass'               => 'active']);
+?>
                     </div>
                 </div>
             </div>
         <?php endif;?>
+
+
+        <?php if ($type == 3 && $remarkData): ?>
+        <?php foreach ($remarkData as $key => $v): ?>
+                <div style="border:1px solid black; margin: 1cm 1cm 1cm 1cm;height: 8cm">
+                    <div style="margin: 1cm 0cm 1cm 1cm">
+                        <div class="form-group">
+                            <label class="control-label col-md-2">评论时间：</label>
+                            <label class="control-label col-md-2"><font color="red"><?=$v['remarkTime'];?></font></label>
+                            <label class="control-label col-md-2">用户旅历值：</label>
+                            <label class="control-label col-md-2"><font color="#6495ed"><?=$v['highScore'];?></font></label>
+                            <label class="control-label col-md-2">评价：</label>
+                            <label class="control-label col-md-2"><font color="blue"><?=$v['lowScore'];?></font>星</label>
+                        </div>
+                        &nbsp;
+                        <div class="form-group">
+                            <label class="control-label col-md-2">评论内容：</label>
+                            <label class="control-label col-md-8"><?=$v['remarkText'];?></label>
+                        </div>
+                    </div>
+                </div>
+        <?php endforeach;?>
+            <div style="margin: 1cm 5cm 1cm 1cm">
+                <div class="col-md-12">
+                    &nbsp;
+                    <?php
+$this->widget('CLinkPager', ['pages' => $pages,
+    'header'                             => '',
+    'htmlOptions'                        => ['class' => 'pagination pagination-m'],
+    'selectedPageCssClass'               => 'active']);
+?>
+                </div>
+            </div>
+        <?php endif;?>
+
+
+        <?php if ($type == 4 && $pictureData): ?>
+                <div style="border:1px solid black; margin: 1cm 1cm 1cm 1cm;height: 35cm">
+                    <div style="margin: 1cm 1cm 1cm 1cm";>
+                        <?php foreach ($pictureData as $key => $v): ?>
+                            <img width="234" height="234" style="margin:20px 0px 0px 2px" src="<?=$v['pic'];?>">
+                        <?php endforeach;?>
+                    </div>
+
+                </div>
+
+            <div style="margin: 1cm 5cm 1cm 1cm">
+                <div class="col-md-12">
+                    &nbsp;
+                    <?php
+$this->widget('CLinkPager', ['pages' => $pages,
+    'header'                             => '',
+    'htmlOptions'                        => ['class' => 'pagination pagination-m'],
+    'selectedPageCssClass'               => 'active']);
+?>
+                </div>
+            </div>
+        <?php endif;?>
+
     </div>
 </nav>
 <!-- end navigation -->
@@ -186,12 +263,12 @@
     </div>
 </div>
 
-<script src="<?php echo Yii::app()->request->baseUrl ?>/statics/Index/js/jquery.min.js"></script>
-<script src="<?php echo Yii::app()->request->baseUrl ?>/statics/Index/js/bootstrap.min.js"></script>
-<script src="<?php echo Yii::app()->request->baseUrl ?>/statics/Index/js/jquery.fitvids.min.js"></script>
-<script src="<?php echo Yii::app()->request->baseUrl ?>/statics/Index/js/highlight.min.js"></script>
-<script src="<?php echo Yii::app()->request->baseUrl ?>/statics/Index/js/main.js"></script>
-<script src="<?php echo Yii::app()->request->baseUrl ?>/statics/Index/js/h.js" type="text/javascript"></script>
+<script src="<?php echo Yii::app()->request->baseUrl; ?>/statics/Index/js/jquery.min.js"></script>
+<script src="<?php echo Yii::app()->request->baseUrl; ?>/statics/Index/js/bootstrap.min.js"></script>
+<script src="<?php echo Yii::app()->request->baseUrl; ?>/statics/Index/js/jquery.fitvids.min.js"></script>
+<script src="<?php echo Yii::app()->request->baseUrl; ?>/statics/Index/js/highlight.min.js"></script>
+<script src="<?php echo Yii::app()->request->baseUrl; ?>/statics/Index/js/main.js"></script>
+<script src="<?php echo Yii::app()->request->baseUrl; ?>/statics/Index/js/h.js" type="text/javascript"></script>
 
 </body>
 </html>

@@ -11,10 +11,11 @@ class BaseDataController extends CController
     public function actionIndex()
     {
         $type=0;
+        $cityName='';
         $cityData=[
             'name'=>'',
         ];
-        $this->renderPartial('index',['type'=>$type,'cityData'=>$cityData]);
+        $this->renderPartial('index',['type'=>$type,'cityName'=>$cityName,'cityData'=>$cityData]);
     }
     //接收搜索词,展示基础信息
     public function actionSearch()
@@ -28,7 +29,7 @@ class BaseDataController extends CController
             $cityData=[
                 'name'=>'',
             ];
-            $this->renderPartial('index',['type'=>$type,'cityData'=>$cityData]);
+            $this->renderPartial('index',['type'=>$type,'cityName'=>$cityName,'cityData'=>$cityData]);
         }
     }
 

@@ -62,9 +62,6 @@ class TravelCityData
         }
         $pictureData = Common::getTableList('picture', '*', "location like '%" . $cityName . "%'", [], '', $limit, $offset);
 
-        $data = Common::getTableList('userpic', 'title', "name like '%" . $cityName . "%'", [], '', $limit, $offset, 'title');
-        echo '<pre>';
-        var_dump($data);die;
         return $pictureData;
     }
 }

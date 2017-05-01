@@ -98,9 +98,11 @@
                 </div>
                 <div class="collapse navbar-collapse" id="main-menu">
                     <ul class="menu">
-                        <li class="nav-current" role="presentation"><a
-                                href="<?php if($type==0){echo Yii::app()->createUrl('ShowData/BaseData/search/searchWord/'.$cityData['name']);} ?>">基础信息</a></li>
-                        <li role="presentation"><a href="#" title="美食信息">美食信息</a>
+                        <li class="nav-current" role="presentation">
+                            <a href="<?php echo Yii::app()->createUrl('ShowData/BaseData/search/searchWord/'.$cityName); ?>">基础信息</a>
+                        </li>
+                        <li role="presentation">
+                            <a href="<?php echo Yii::app()->createUrl('ShowData/BaseData/food/cityName/'.$cityName); ?>" title="美食信息">美食信息</a>
                         </li>
                         <li role="presentation"><a href="#" title="游客评论">游客评论</a></li>
                         <li role="presentation"><a href="#" title="著名景点">著名景点</a></li>
@@ -112,10 +114,47 @@
 
         </div>
         <?php if($type==1): ?>
-        <div style="border:1px solid black; margin: 1cm 1cm 1cm 1cm ">
+        <div style="border:1px solid black; margin: 1cm 1cm 1cm 1cm;height: 15cm"  >
             <h2 style="margin: 1cm 20cm 1cm 1cm"><?=$cityData['name']?></h2>
-            <h5 style="margin: -1.5cm 13cm 1cm 1cm"><?=$cityData['address']?></h5>
+            <h5 style="margin: -1.5cm 10cm 1cm 1cm"><?=$cityData['address']?></h5>
+            <div style="margin: 2cm 0cm 1cm 1cm">
+                <div class="col-md-2">
+                    <h5>大家印象：</h5>
+                </div>
+                <div class="col-md-8">
+                    <label><?=$cityData['impression']?></label>
+                </div>
+            </div>
+            <div style="margin: 4cm 1cm 1cm 1cm">
+                <div class="col-md-2">
+                    <h5>更多：</h5>
+                </div>
+                <div class="col-md-8">
+                    <label><?=$cityData['moreDesc']?></label>
+                </div>
+            </div>
         </div>
+        <?php endif;?>
+        <?php if($type==2): ?>
+            <div style="border:1px solid black; margin: 1cm 1cm 1cm 1cm;height: 20cm">
+                <h3 style="margin: 1cm 20cm 1cm 1cm"><?=$foodData[1]['name']?></h3>
+                <div style="margin: 1cm 0cm 1cm 1cm">
+                    <div class="col-md-2">
+                        <h4>美食描述：</h4>
+                    </div>
+                    <div class="col-md-8">
+                        <label><?=$foodData[1]['content']?></label>
+                    </div>
+                </div>
+                <div style="margin: 4cm 1cm 1cm 1cm">
+                    <div class="col-md-2">
+                        <h4>美食图片：</h4>
+                    </div>
+                    <div class="col-md-8">
+                        <img src="<?=$foodData[1]['foodPic']?>" height="400px">
+                    </div>
+                </div>
+            </div>
         <?php endif;?>
     </div>
 </nav>

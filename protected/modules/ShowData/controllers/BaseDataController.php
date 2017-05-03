@@ -10,12 +10,13 @@ class BaseDataController extends CController
     //加载界面
     public function actionIndex()
     {
+        $searchCity=TravelCityData::getMaxSerachCity();
         $type     = 0;
         $cityName = '';
         $cityData = [
             'name' => '',
         ];
-        $this->renderPartial('index', ['type' => $type, 'cityName' => $cityName, 'cityData' => $cityData]);
+        $this->renderPartial('index', ['type' => $type, 'cityName' => $cityName, 'cityData' => $cityData,'searchCity'=>$searchCity]);
     }
     //接收搜索词,展示基础信息
     public function actionSearch()
@@ -23,14 +24,10 @@ class BaseDataController extends CController
         $city = Yii::app()->request->getParam('searchWord');
         if ($city != '') {
             $cityData = TravelCityData::getCityBaseData($city);
-            $this->renderPartial('index', ['type' => 1, 'cityName' => $city, 'cityData' => $cityData]);
-        } else {
-            $type     = 0;
-            $cityData = [
-                'name' => '',
-            ];
-
-            $this->renderPartial('index', ['type' => $type, 'cityName' => $city, 'cityData' => $cityData]);
+            $searchCity=TravelCityData::getMaxSerachCity();
+            $this->renderPartial('index', ['type' => 1, 'cityName' => $city, 'cityData' => $cityData,'searchCity'=>$searchCity]);
+        } else{
+            $this->redirect(['baseData/index']);
         }
     }
 
@@ -47,9 +44,13 @@ class BaseDataController extends CController
             $offset          = $pages->currentPage * $pages->pageSize;
 
             $foodData = TravelCityData::getFoodData($cityName, $offset, $limit, 0);
+            $searchCity=TravelCityData::getMaxSerachCity();
 
-            $this->renderPartial('index', ['type' => 2, 'cityName' => $cityName, 'foodData' => $foodData, 'pages' => $pages]);
+            $this->renderPartial('index', ['type' => 2, 'cityName' => $cityName, 'foodData' => $foodData, 'pages' => $pages,'searchCity'=>$searchCity]);
+        }else{
+            $this->redirect(['baseData/index']);
         }
+
     }
 
     //展示游客评论
@@ -65,8 +66,11 @@ class BaseDataController extends CController
             $offset          = $pages->currentPage * $pages->pageSize;
 
             $remarkData = TravelCityData::getRemarkData($cityName, $offset, $limit, 0);
+            $searchCity=TravelCityData::getMaxSerachCity();
 
-            $this->renderPartial('index', ['type' => 3, 'cityName' => $cityName, 'remarkData' => $remarkData, 'pages' => $pages]);
+            $this->renderPartial('index', ['type' => 3, 'cityName' => $cityName, 'remarkData' => $remarkData, 'pages' => $pages,'searchCity'=>$searchCity]);
+        }else{
+            $this->redirect(['baseData/index']);
         }
     }
 
@@ -83,8 +87,11 @@ class BaseDataController extends CController
             $offset          = $pages->currentPage * $pages->pageSize;
 
             $pictureData = TravelCityData::getPictureData($cityName, $offset, $limit, 0);
+            $searchCity=TravelCityData::getMaxSerachCity();
 
-            $this->renderPartial('index', ['type' => 4, 'cityName' => $cityName, 'pictureData' => $pictureData, 'pages' => $pages]);
+            $this->renderPartial('index', ['type' => 4, 'cityName' => $cityName, 'pictureData' => $pictureData, 'pages' => $pages,'searchCity'=>$searchCity]);
+        }else{
+            $this->redirect(['baseData/index']);
         }
     }
 

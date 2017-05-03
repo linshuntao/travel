@@ -11,6 +11,8 @@ class TravelCityData
     public static function getCityBaseData($cityName)
     {
         $cityData = Common::getTableItem('viewdata', '*', "name like '%" . $cityName . "%'");
+        $data=Common::getTableItem('view', '*', "name like '%" . $cityName . "%'");
+        Yii::app()->db->createCommand()->update('view',['searchCount'=>(int)$data['searchCount']+1],'id=:id',[':id'=>$data['id']]);
 
         return $cityData;
     }
@@ -63,5 +65,12 @@ class TravelCityData
         $pictureData = Common::getTableList('picture', '*', "location like '%" . $cityName . "%'", [], '', $limit, $offset);
 
         return $pictureData;
+    }
+
+    public static function getMaxSerachCity()
+    {
+        $data=Common::getTableList('view','*','',[],'searchCount DESC',5,0);
+
+        return $data;
     }
 }

@@ -90,9 +90,17 @@
                     <h4 class="title"></h4>
                     <div class="content download">
                         <form action="<?php echo $this->createUrl('baseData/search'); ?>" method="post">
-                            <label>请输入景点名：</label>
-                            <input type="text" id="searchInput" value="<?=($cityName) ? $cityName : '';?>" name="searchWord">
-                            <button class="btn" style="margin-left: 8%" onclick="searchNews()">搜索</button>
+                            <div class="form-group">
+                                <label>请输入景点名：</label>
+                                <input type="text" id="searchInput" value="<?=($cityName) ? $cityName : '';?>" name="searchWord">
+                                <button class="btn" style="margin-left: 8%" onclick="searchNews()">搜索</button>
+                            </div>
+                            <div class="form-group">
+                                <label>搜索最多：</label>
+                                <?php foreach($searchCity as $v):?>
+                                    <a href="<?php echo Yii::app()->createUrl('ShowData/BaseData/search/searchWord/' . $v['name']); ?>"> &nbsp;<?=$v['name'];?></a>
+                                <?php endforeach;?>
+                            </div>
                         </form>
                     </div>
                 </div>

@@ -8,37 +8,42 @@ require_once './protected/extension/phpanalysis/phpanalysis.class.php';
  */
 class TravelCityData
 {
+
     public static function getCityBaseData($cityName)
     {
-
+        ini_set('memory_limit', '512M');
         $cityData = Common::getTableItem('viewdata', '*', "name like '%" . $cityName . "%'");
-        $data=Common::getTableItem('view', '*', "name like '%" . $cityName . "%'");
-        Yii::app()->db->createCommand()->update('view',['searchCount'=>(int)$data['searchCount']+1],'id=:id',[':id'=>$data['id']]);
+        $data     = Common::getTableItem('view', '*', "name like '%" . $cityName . "%'");
+        Yii::app()->db->createCommand()->update('view', ['searchCount' => (int) $data['searchCount'] + 1], 'id=:id', [':id' => $data['id']]);
 
-        $month=['01','02','03','04','05','06','07','08','09','10','11','12'];
-        foreach($month as $v){
-            $count=Common::getTableItem('remark','count(id) as count','location=\''.$cityName.'\' AND remarkTime like \'%-'.$v.'-%\'');
-            $data['month'][]=$count['count'];
-        }
-        arsort($data['month']);
-        echo '<pre>';
-        var_dump($data);die;
-        $remarkText=Common::getTableList('remark','remarkText',"location like '%" . $cityName . "%'");
-        $data='';
-        foreach($remarkText as $v){
-            $data.=strip_tags($v['remarkText']);
-        }
-        //var_dump($data);die;
-        PhpAnalysis::$loadInit = false;
-        $pa = new PhpAnalysis ( 'utf-8', 'utf-8', false );
-        $pa->LoadDict ();
-        $pa->SetSource ( $data );
-        $pa->StartAnalysis ( true );
+//        $month=['01','02','03','04','05','06','07','08','09','10','11','12'];
+        //        foreach($month as $v){
+        //            $count=Common::getTableItem('remark','count(id) as count','location=\''.$cityName.'\' AND remarkTime like \'%-'.$v.'-%\'');
+        //            $data['month'][]=$count['count'];
+        //        }
+        //        arsort($data['month']);
 
-        $tags = $pa->GetFinallyKeywords ( 20 );
-        $tagsArr = explode ( ",", $tags );
-        var_dump($tagsArr);die;
-
+//        $remarkText = Common::getTableList('remark', 'remarkText', "location like '%" . $cityName . "%'");
+        //
+        //        $data = '';
+        //        foreach ($remarkText as $v) {
+        //            $data .= strip_tags($v['remarkText']);
+        //        }
+        //
+        //        PhpAnalysis::$loadInit = false;
+        //        $pa                    = new PhpAnalysis('utf-8', 'utf-8', false);
+        //        $pa->LoadDict();
+        //        $pa->SetSource($data);
+        //        $pa->StartAnalysis(true);
+        //
+        //        $tags = $pa->GetFinallyKeywords(20);
+        //        $arr  = $pa->GetFinallyIndex();
+        //
+        //        $tagsArr = explode(",", $tags);
+        //        echo '<pre>';
+        //        echo strlen($data);
+        //        var_dump($tagsArr);
+        //        var_dump($arr);die;
         return $cityData;
     }
 
@@ -94,7 +99,7 @@ class TravelCityData
 
     public static function getMaxSerachCity()
     {
-        $data=Common::getTableList('view','*','',[],'searchCount DESC',5,0);
+        $data = Common::getTableList('view', '*', '', [], 'searchCount DESC', 5, 0);
 
         return $data;
     }

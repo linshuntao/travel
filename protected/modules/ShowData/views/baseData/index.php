@@ -14,8 +14,11 @@
     <link rel="stylesheet" href="<?php echo Yii::app()->request->baseUrl; ?>/statics/Index/css/bootstrap.min.css">
     <link rel="stylesheet" href="<?php echo Yii::app()->request->baseUrl; ?>/statics/Index/css/font-awesome.min.css">
     <link rel="stylesheet" href="<?php echo Yii::app()->request->baseUrl; ?>/statics/Index/css/vs.min.css">
+
     <link rel="stylesheet" type="text/css"
           href="<?php echo Yii::app()->request->baseUrl; ?>/statics/Index/css/screen.css">
+    <link rel="stylesheet" type="text/css"
+          href="<?php echo Yii::app()->request->baseUrl; ?>/statics/Index/css/style.css">
     <style id="fit-vids-style">.fluid-width-video-wrapper {
             width: 100%;
             position: relative;
@@ -97,7 +100,7 @@
                             </div>
                             <div class="form-group">
                                 <label>搜索最多：</label>
-                                <?php foreach($searchCity as $v):?>
+                                <?php foreach ($searchCity as $v): ?>
                                     <a href="<?php echo Yii::app()->createUrl('ShowData/BaseData/search/searchWord/' . $v['name']); ?>"> &nbsp;<?=$v['name'];?></a>
                                 <?php endforeach;?>
                             </div>
@@ -136,6 +139,26 @@
                 </div>
                 <div class="col-md-8">
                     <label><?=$cityData['impression'];?></label>
+                </div>
+                <div id="div1">
+                    <a href="http://www.51xuediannao.com" class="red">jquery特效</a>
+                    <a href="http://www.51xuediannao.com" class="red">网页特效</a>
+                    <a href="http://www.51xuediannao.com" class="red">网页欣赏</a>
+                    <a href="http://www.51xuediannao.com" class="red">导航菜单</a>
+                    <a href="http://www.51xuediannao.com" class="blue">懒人建站</a>
+                    <a href="http://www.51xuediannao.com" class="red">网页特效</a>
+                    <a href="http://www.51xuediannao.com" class="yellow">JavaScript</a>
+                    <a href="http://www.51xuediannao.com" class="red">jquery</a>
+                    <a href="http://www.51xuediannao.com" class="red">CSS</a>
+                    <a href="http://www.51xuediannao.com" class="red">jquery特效</a>
+                    <a href="http://www.51xuediannao.com" class="red">jquery特效</a>
+                    <a href="http://www.51xuediannao.com" class="blue">CSS技巧</a>
+                    <a href="http://www.51xuediannao.com" class="blue">焦点幻灯片</a>
+                    <a href="http://www.51xuediannao.com" class="blue">导航菜单</a>
+                    <a href="http://www.51xuediannao.com" class="blue">jquery</a>
+                    <a href="http://www.51xuediannao.com" class="blue">懒人建站</a>
+                    <a href="http://www.51xuediannao.com" class="yellow">网页特效</a>
+                    <a href="http://www.51xuediannao.com" class="blue">懒人建站</a>
                 </div>
             </div>
             <div style="margin: 4cm 1cm 1cm 1cm">
@@ -271,12 +294,14 @@ $this->widget('CLinkPager', ['pages' => $pages,
     </div>
 </div>
 
+
 <script src="<?php echo Yii::app()->request->baseUrl; ?>/statics/Index/js/jquery.min.js"></script>
 <script src="<?php echo Yii::app()->request->baseUrl; ?>/statics/Index/js/bootstrap.min.js"></script>
 <script src="<?php echo Yii::app()->request->baseUrl; ?>/statics/Index/js/jquery.fitvids.min.js"></script>
 <script src="<?php echo Yii::app()->request->baseUrl; ?>/statics/Index/js/highlight.min.js"></script>
 <script src="<?php echo Yii::app()->request->baseUrl; ?>/statics/Index/js/main.js"></script>
 <script src="<?php echo Yii::app()->request->baseUrl; ?>/statics/Index/js/h.js" type="text/javascript"></script>
+<script src="<?php echo Yii::app()->request->baseUrl; ?>/statics/Index/js/3d.js" type="text/javascript"></script>
 
 </body>
 </html>

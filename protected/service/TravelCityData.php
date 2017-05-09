@@ -8,7 +8,12 @@ require_once './protected/extension/phpanalysis/phpanalysis.class.php';
  */
 class TravelCityData
 {
-
+    public static $color = [
+        0 => 'red',
+        1 => 'yellow',
+        2 => "blue",
+        3 => 'green',
+    ];
     public static function getCityBaseData($cityName)
     {
         ini_set('memory_limit', '512M');
@@ -16,34 +21,32 @@ class TravelCityData
         $data     = Common::getTableItem('view', '*', "name like '%" . $cityName . "%'");
         Yii::app()->db->createCommand()->update('view', ['searchCount' => (int) $data['searchCount'] + 1], 'id=:id', [':id' => $data['id']]);
 
-//        $month=['01','02','03','04','05','06','07','08','09','10','11','12'];
-        //        foreach($month as $v){
-        //            $count=Common::getTableItem('remark','count(id) as count','location=\''.$cityName.'\' AND remarkTime like \'%-'.$v.'-%\'');
-        //            $data['month'][]=$count['count'];
-        //        }
-        //        arsort($data['month']);
+        $month = ['01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12'];
+        foreach ($month as $v) {
+            $count               = Common::getTableItem('remark', 'count(id) as count', 'location=\'' . $cityName . '\' AND remarkTime like \'%-' . $v . '-%\'');
+            $cityData['month'][] = $count['count'];
+        }
+        arsort($cityData['month']);
 
-//        $remarkText = Common::getTableList('remark', 'remarkText', "location like '%" . $cityName . "%'");
-        //
-        //        $data = '';
-        //        foreach ($remarkText as $v) {
-        //            $data .= strip_tags($v['remarkText']);
-        //        }
-        //
-        //        PhpAnalysis::$loadInit = false;
-        //        $pa                    = new PhpAnalysis('utf-8', 'utf-8', false);
-        //        $pa->LoadDict();
-        //        $pa->SetSource($data);
-        //        $pa->StartAnalysis(true);
-        //
-        //        $tags = $pa->GetFinallyKeywords(20);
-        //        $arr  = $pa->GetFinallyIndex();
-        //
-        //        $tagsArr = explode(",", $tags);
-        //        echo '<pre>';
-        //        echo strlen($data);
-        //        var_dump($tagsArr);
-        //        var_dump($arr);die;
+        $remarkText = Common::getTableList('remark', 'remarkText', "location like '%" . $cityName . "%'");
+
+        $content = '';
+        foreach ($remarkText as $v) {
+            $content .= strip_tags($v['remarkText']);
+        }
+
+        PhpAnalysis::$loadInit = false;
+        $pa                    = new PhpAnalysis('utf-8', 'utf-8', false);
+        $pa->LoadDict();
+        $pa->SetSource($content);
+        $pa->StartAnalysis(true);
+
+        $tags    = $pa->GetFinallyKeywords(20);
+        $tagsArr = explode(",", $tags);
+
+        $cityData['tags'] = $tagsArr;
+//        echo '<pre>';
+        //        var_dump($data);die;
         return $cityData;
     }
 

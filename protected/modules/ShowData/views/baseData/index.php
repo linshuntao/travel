@@ -137,28 +137,13 @@
                 <div class="col-md-2">
                     <h5>大家印象：</h5>
                 </div>
+                <div id="div1">
+                    <?php foreach ($cityData['tags'] as $key => $v): ?>
+                        <a href="#" class="<?=TravelCityData::$color[$key % 3];?>"><?=$v;?></a>
+                    <?php endforeach;?>
+                </div>
                 <div class="col-md-8">
                     <label><?=$cityData['impression'];?></label>
-                </div>
-                <div id="div1">
-                    <a href="http://www.51xuediannao.com" class="red">jquery特效</a>
-                    <a href="http://www.51xuediannao.com" class="red">网页特效</a>
-                    <a href="http://www.51xuediannao.com" class="red">网页欣赏</a>
-                    <a href="http://www.51xuediannao.com" class="red">导航菜单</a>
-                    <a href="http://www.51xuediannao.com" class="blue">懒人建站</a>
-                    <a href="http://www.51xuediannao.com" class="red">网页特效</a>
-                    <a href="http://www.51xuediannao.com" class="yellow">JavaScript</a>
-                    <a href="http://www.51xuediannao.com" class="red">jquery</a>
-                    <a href="http://www.51xuediannao.com" class="red">CSS</a>
-                    <a href="http://www.51xuediannao.com" class="red">jquery特效</a>
-                    <a href="http://www.51xuediannao.com" class="red">jquery特效</a>
-                    <a href="http://www.51xuediannao.com" class="blue">CSS技巧</a>
-                    <a href="http://www.51xuediannao.com" class="blue">焦点幻灯片</a>
-                    <a href="http://www.51xuediannao.com" class="blue">导航菜单</a>
-                    <a href="http://www.51xuediannao.com" class="blue">jquery</a>
-                    <a href="http://www.51xuediannao.com" class="blue">懒人建站</a>
-                    <a href="http://www.51xuediannao.com" class="yellow">网页特效</a>
-                    <a href="http://www.51xuediannao.com" class="blue">懒人建站</a>
                 </div>
             </div>
             <div style="margin: 4cm 1cm 1cm 1cm">

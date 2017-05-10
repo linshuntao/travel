@@ -34,10 +34,6 @@
         }
     </style>
 
-    <script type="text/javascript" charset="utf-8"
-            src="<?php echo Yii::app()->request->baseUrl . '/protected/library/ueditor/ueditor.config.js'; ?>"></script>
-    <script type="text/javascript" charset="utf-8"
-            src="<?php echo Yii::app()->request->baseUrl . '/protected/library/ueditor/ueditor.all.min.js'; ?>"></script>
     <script>
         var _hmt = _hmt || [];
     </script>
@@ -94,7 +90,7 @@
                     <div class="content download">
                         <form action="<?php echo $this->createUrl('baseData/search'); ?>" method="post">
                             <div class="form-group">
-                                <label>请输入景点名：</label>
+                                <label>请输入城市名：</label>
                                 <input type="text" id="searchInput" value="<?=($cityName) ? $cityName : '';?>" name="searchWord">
                                 <button class="btn" style="margin-left: 8%" onclick="searchNews()">搜索</button>
                             </div>
@@ -130,23 +126,28 @@
         </div>
 
         <?php if ($type == 1): ?>
-        <div style="border:1px solid black; margin: 1cm 1cm 1cm 1cm;height: 15cm"  >
+        <div style="border:1px solid black; margin: 1cm 1cm 1cm 1cm;height: 25cm"  >
             <h2 style="margin: 1cm 20cm 1cm 1cm"><?=$cityData['name'];?></h2>
             <h5 style="margin: -1.5cm 10cm 1cm 1cm"><?=$cityData['address'];?></h5>
             <div style="margin: 2cm 0cm 1cm 1cm">
                 <div class="col-md-2">
                     <h5>大家印象：</h5>
                 </div>
-                <div id="div1">
+                <div id="div1"  >
                     <?php foreach ($cityData['tags'] as $key => $v): ?>
-                        <a href="#" class="<?=TravelCityData::$color[$key % 3];?>"><?=$v;?></a>
+                        <a href="#" class="<?=TravelCityData::$color[$key % 5];?>"><?=$v;?></a>
                     <?php endforeach;?>
+                </div>
+            </div>
+            <div style="margin: 1cm 0cm 1cm 1cm">
+                <div class="col-md-2">
+                    <h5>城市印象：</h5>
                 </div>
                 <div class="col-md-8">
                     <label><?=$cityData['impression'];?></label>
                 </div>
             </div>
-            <div style="margin: 4cm 1cm 1cm 1cm">
+            <div style="margin: 3cm 1cm 1cm 1cm">
                 <div class="col-md-2">
                     <h5>更多：</h5>
                 </div>
@@ -193,36 +194,62 @@ $this->widget('CLinkPager', ['pages' => $pages,
 
 
         <?php if ($type == 3 && $remarkData): ?>
-        <?php foreach ($remarkData as $key => $v): ?>
-                <div style="border:1px solid black; margin: 1cm 1cm 1cm 1cm;height: 8cm">
-                    <div style="margin: 1cm 0cm 1cm 1cm">
-                        <div class="form-group">
-                            <label class="control-label col-md-2">评论时间：</label>
-                            <label class="control-label col-md-2"><font color="red"><?=$v['remarkTime'];?></font></label>
-                            <label class="control-label col-md-2">用户旅历值：</label>
-                            <label class="control-label col-md-2"><font color="#6495ed"><?=$v['highScore'];?></font></label>
-                            <label class="control-label col-md-2">评价：</label>
-                            <label class="control-label col-md-2"><font color="blue"><?=$v['lowScore'];?></font>星</label>
-                        </div>
-                        &nbsp;
-                        <div class="form-group">
-                            <label class="control-label col-md-2">评论内容：</label>
-                            <label class="control-label col-md-8"><?=$v['remarkText'];?></label>
+            <div style="margin: 20px 0px 0px 0px">
+                <div class="form-group">
+                    <label>请输入搜索词：</label>
+                    <input type="text" id="searchWord" value="<?=($searchWord) ? $searchWord : '';?>" name="searchWord">
+                    <input type="text" id="cityName" name="cityName" value="<?=($cityName) ? $cityName : '';?>" class="hidden">
+                    <script language="javascript">
+                        function addParam()
+                        {
+                            var objA=document.getElementById("searchRemark");
+                            objA.href="<?php echo Yii::app()->createUrl('ShowData/BaseData/remark/cityName/' . $cityName).'/searchWord/'; ?>"+document.getElementById("searchWord").value;
+                        }
+                    </script>
+                    <a id="searchRemark" href="" onclick="addParam()"><input type="button" value="搜索"></a>
+                </div>
+                <div class="form-group">
+                    <label>常用搜索：</label>
+                    <a href="<?php echo Yii::app()->createUrl('ShowData/BaseData/remark/cityName/' . $cityName).'/searchWord/气候'; ?>"> &nbsp;气候</a>
+                    <a href="<?php echo Yii::app()->createUrl('ShowData/BaseData/remark/cityName/' . $cityName).'/searchWord/吃'; ?>"> &nbsp;吃</a>
+                    <a href="<?php echo Yii::app()->createUrl('ShowData/BaseData/remark/cityName/' . $cityName).'/searchWord/玩'; ?>"> &nbsp;玩</a>
+                    <a href="<?php echo Yii::app()->createUrl('ShowData/BaseData/remark/cityName/' . $cityName).'/searchWord/住'; ?>"> &nbsp;住</a>
+                    <a href="<?php echo Yii::app()->createUrl('ShowData/BaseData/remark/cityName/' . $cityName).'/searchWord/行'; ?>"> &nbsp;行</a>
+                </div>
+
+                <?php foreach ($remarkData as $key => $v): ?>
+                    <div style="border:1px solid black; margin: 1cm 1cm 1cm 1cm;height: 8cm">
+                        <div style="margin: 1cm 0cm 1cm 1cm">
+                            <div class="form-group">
+                                <label class="control-label col-md-2">评论时间：</label>
+                                <label class="control-label col-md-2"><font color="red"><?=$v['remarkTime'];?></font></label>
+                                <label class="control-label col-md-2">用户旅历值：</label>
+                                <label class="control-label col-md-2"><font color="#6495ed"><?=$v['highScore'];?></font></label>
+                                <label class="control-label col-md-2">评价：</label>
+                                <label class="control-label col-md-2"><font color="blue"><?=$v['lowScore'];?></font>星</label>
+                            </div>
+                            &nbsp;
+                            <div class="form-group">
+                                <label class="control-label col-md-2">评论内容：</label>
+                                <label class="control-label col-md-8"><?=$v['remarkText'];?></label>
+                            </div>
                         </div>
                     </div>
-                </div>
-        <?php endforeach;?>
-            <div style="margin: 1cm 5cm 1cm 1cm">
-                <div class="col-md-12">
-                    &nbsp;
-                    <?php
-$this->widget('CLinkPager', ['pages' => $pages,
-    'header'                             => '',
-    'htmlOptions'                        => ['class' => 'pagination pagination-m'],
-    'selectedPageCssClass'               => 'active']);
-?>
+                <?php endforeach;?>
+                <div style="margin: 1cm 5cm 1cm 1cm">
+                    <div class="col-md-12">
+                        &nbsp;
+                        <?php
+                        $this->widget('CLinkPager', ['pages' => $pages,
+                            'header'                             => '',
+                            'htmlOptions'                        => ['class' => 'pagination pagination-m'],
+                            'selectedPageCssClass'               => 'active']);
+                        ?>
+                    </div>
                 </div>
             </div>
+
+
         <?php endif;?>
 
 

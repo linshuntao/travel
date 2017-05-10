@@ -12,7 +12,8 @@ class TravelCityData
         0 => 'red',
         1 => 'yellow',
         2 => "blue",
-        3 => 'green',
+        3=>'green',
+        4=>'black',
     ];
     public static function getCityBaseData($cityName)
     {
@@ -69,14 +70,22 @@ class TravelCityData
         }
     }
 
-    public static function getRemarkData($cityName, $offset, $limit, $isCount = 0)
+    public static function getRemarkData($data, $offset, $limit, $isCount = 0)
     {
         if ($isCount) {
-            $count = Common::getTableItem('remark', 'count(id) as count', "location like '%" . $cityName . "%'");
+            if($data['searchWord']){
+                $count = Common::getTableItem('remark', 'count(id) as count', "location like '%" . $data['cityName'] . "%' AND remarkText like '%" . $data['searchWord'] . "%'");
+            }else{
+                $count = Common::getTableItem('remark', 'count(id) as count', "location like '%" . $data['cityName'] . "%'");
+            }
 
             return $count['count'];
         }
-        $remarkData = Common::getTableList('remark', '*', "location like '%" . $cityName . "%'", [], 'highScore DESC', $limit, $offset);
+        if($data['searchWord']){
+            $remarkData = Common::getTableList('remark', '*', "location like '%" . $data['cityName'] . "%' AND remarkText like '%" . $data['searchWord'] . "%'", [], 'highScore DESC', $limit, $offset);
+        }else{
+            $remarkData = Common::getTableList('remark', '*', "location like '%" . $data['cityName'] . "%'", [], 'highScore DESC', $limit, $offset);
+        }
 
         //去除评论内容中的超链接
         if ($remarkData) {

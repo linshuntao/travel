@@ -56,19 +56,22 @@ class BaseDataController extends CController
     //展示游客评论
     public function actionRemark()
     {
-        $cityName = Yii::app()->request->getParam('cityName');
-        if ($cityName) {
-            $count = TravelCityData::getRemarkData($cityName, '', '', 1);
+        $data['cityName'] = Yii::app()->request->getParam('cityName');
+        $data['searchWord']= Yii::app()->request->getParam('searchWord');
+
+        if ($data) {
+            $count = TravelCityData::getRemarkData( $data, '', '', 1);
+
             //翻页
             $pages           = new CPagination($count);
             $pages->pageSize = 5;
             $limit           = $pages->pageSize;
             $offset          = $pages->currentPage * $pages->pageSize;
 
-            $remarkData = TravelCityData::getRemarkData($cityName, $offset, $limit, 0);
+            $remarkData = TravelCityData::getRemarkData( $data, $offset, $limit, 0);
             $searchCity=TravelCityData::getMaxSerachCity();
 
-            $this->renderPartial('index', ['type' => 3, 'cityName' => $cityName, 'remarkData' => $remarkData, 'pages' => $pages,'searchCity'=>$searchCity]);
+            $this->renderPartial('index', ['type' => 3, 'cityName' =>  $data['cityName'],'searchWord'=>$data['searchWord'], 'remarkData' => $remarkData, 'pages' => $pages,'searchCity'=>$searchCity]);
         }else{
             $this->redirect(['baseData/index']);
         }

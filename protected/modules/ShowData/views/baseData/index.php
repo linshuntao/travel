@@ -48,14 +48,13 @@
     <script>
         var commentForm = document.getElementById("commentForm");
         commentForm.style.display = "none";
-
-
     </script>
-
+    <script src="https://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+    <script src="https://code.highcharts.com/highcharts.js"></script>
     <title>景点网</title>
 </head>
 
-<body class="home-template">
+
 
 
 <!-- start header -->
@@ -70,9 +69,11 @@
         </div>
     </div>
 </div>
+
 </header>
 <!-- end header -->
 
+<body class="home-template">
 <!-- start navigation -->
 <nav class="main-navigation">
     <div class="container">
@@ -84,6 +85,55 @@
                         <i class="fa fa-bars"></i>
                         </span>
                 </div>
+                <div id="container" style="width: 550px; height: 400px; margin: 0 auto"></div>
+                <script language="JavaScript">
+                    $(document).ready(function() {
+
+                        var title = {
+                            text: '每月平均温度'
+                        };
+                        var subtitle = {
+                            text: 'Source: runoob.com'
+                        };
+                        var xAxis = {
+                            categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
+                                'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+                        };
+                        var yAxis = {
+                            title: {
+                                text: 'Temperature (\xB0C)'
+                            }
+                        };
+                        var plotOptions = {
+                            line: {
+                                dataLabels: {
+                                    enabled: true
+                                },
+                                enableMouseTracking: false
+                            }
+                        };
+                        var series= [{
+                            name: 'Tokyo',
+                            data: [7.0, 6.9, 9.5, 14.5, 18.4, 21.5, 25.2, 326.5, 23.3, 18.3, 13.9, 9.6]
+                        }, {
+                            name: 'London',
+                            data: [3.9, 4.2, 5.7, 8.5, 11.9, 15.2, 17.0, 16.6, 14.2, 10.3, 6.6, 4.8]
+                        }
+                        ];
+
+                        var json = {};
+
+                        json.title = title;
+                        json.subtitle = subtitle;
+                        json.xAxis = xAxis;
+                        json.yAxis = yAxis;
+                        json.series = series;
+                        json.plotOptions = plotOptions;
+
+                        $('#container').highcharts(json);
+
+                    });
+                </script>
                 &nbsp;
                 <div class="widget">
                     <h4 class="title"></h4>
@@ -139,6 +189,7 @@
                     <?php endforeach;?>
                 </div>
             </div>
+
             <div style="margin: 1cm 0cm 1cm 1cm">
                 <div class="col-md-2">
                     <h5>城市印象：</h5>
@@ -314,6 +365,8 @@ $this->widget('CLinkPager', ['pages' => $pages,
 <script src="<?php echo Yii::app()->request->baseUrl; ?>/statics/Index/js/main.js"></script>
 <script src="<?php echo Yii::app()->request->baseUrl; ?>/statics/Index/js/h.js" type="text/javascript"></script>
 <script src="<?php echo Yii::app()->request->baseUrl; ?>/statics/Index/js/3d.js" type="text/javascript"></script>
+
+
 
 </body>
 </html>

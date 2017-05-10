@@ -322,6 +322,7 @@ $this->widget('CLinkPager', ['pages' => $pages,
 <script src="<?php echo Yii::app()->request->baseUrl; ?>/statics/Index/js/main.js"></script>
 <script src="<?php echo Yii::app()->request->baseUrl; ?>/statics/Index/js/h.js" type="text/javascript"></script>
 <script src="<?php echo Yii::app()->request->baseUrl; ?>/statics/Index/js/3d.js" type="text/javascript"></script>
+<?php if($type==1): ?>
 <script language="JavaScript">
     $(function() {
         var chart = new Highcharts.Chart({
@@ -360,6 +361,7 @@ $this->widget('CLinkPager', ['pages' => $pages,
         });
     });
 </script>
+<?php endif;?>
 
 
 </body>

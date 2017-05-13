@@ -98,4 +98,45 @@ class BaseDataController extends CController
         }
     }
 
+    //著名景点
+    public function actionSign()
+    {
+        $data['cityName'] = Yii::app()->request->getParam('cityName');
+        $data['searchTitle']= Yii::app()->request->getParam('searchTitle');
+        $data['searchContent']= Yii::app()->request->getParam('searchContent');
+
+        if ($data) {
+            $signData = TravelCityData::getSignData($data['cityName']);
+            $pages='';
+            $singPicData='';
+            if($data['searchTitle']!=''){
+                $count = TravelCityData::getSignPicData( $data, '', '', 1);
+
+                //翻页
+                $pages           = new CPagination($count);
+                $pages->pageSize =5;
+                $limit           = $pages->pageSize;
+                $offset          = $pages->currentPage * $pages->pageSize;
+
+                $singPicData = TravelCityData::getSignPicData( $data, $offset, $limit, 0);
+            }
+            if($data['searchContent']!=''){
+                $count = TravelCityData::getContentPicData( $data, '', '', 1);
+
+                //翻页
+                $pages           = new CPagination($count);
+                $pages->pageSize =5;
+                $limit           = $pages->pageSize;
+                $offset          = $pages->currentPage * $pages->pageSize;
+
+                $singPicData = TravelCityData::getContentPicData( $data, $offset, $limit, 0);
+            }
+            $searchCity=TravelCityData::getMaxSerachCity();
+
+            $this->renderPartial('index', ['type' => 5, 'cityName' => $data['cityName'], 'searchTitle'=>$data['searchTitle'],'searchContent'=>$data['searchContent'],'signData' => $signData,'signPicData' => $singPicData, 'pages' => $pages,'searchCity'=>$searchCity]);
+        }else{
+            $this->redirect(['baseData/index']);
+        }
+    }
+
 }

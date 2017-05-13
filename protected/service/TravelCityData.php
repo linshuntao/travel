@@ -120,4 +120,48 @@ class TravelCityData
 
         return $data;
     }
+
+    public static function getSignData($cityName)
+    {
+        $signData=Common::getTableList('userpic','count(id) as count,title', "name like '%" . $cityName . "%' AND picDesc!='' AND title!=''",[],'','','','title');
+        $finData=[];
+        arsort($signData);
+        foreach($signData as $v){
+            if($v['count']>=50){
+                $finData[]=[
+                'title'=>$v['title'],
+                'count'=>$v['count'],
+                ];
+            }
+        }
+        return $finData;
+    }
+
+    public static function getSignPicData($data,$offset, $limit, $isCount = 0)
+    {
+        if($isCount){
+            $count=Common::getTableItem('userpic','count(id) as count',"name like '%" . $data['cityName'] . "%' AND title like '%" . $data['searchTitle'] . "%'");
+            return $count['count'];
+        }
+        $picData=Common::getTableList('userpic','*',"name like '%" . $data['cityName'] . "%' AND title like '%" . $data['searchTitle'] . "%'",[],'',$limit,$offset);
+        foreach($picData as $key=>$v){
+            $picData[$key]['picUrl']=stripslashes($v['picUrl']);
+        }
+
+        return $picData;
+    }
+
+    public static function getContentPicData($data,$offset, $limit, $isCount = 0)
+    {
+        if($isCount){
+            $count=Common::getTableItem('userpic','count(id) as count',"name like '%" . $data['cityName'] . "%' AND picDesc like '%" . $data['searchContent'] . "%'");
+            return $count['count'];
+        }
+        $picData=Common::getTableList('userpic','*',"name like '%" . $data['cityName'] . "%' AND picDesc like '%" . $data['searchContent'] . "%'",[],'',$limit,$offset);
+        foreach($picData as $key=>$v){
+            $picData[$key]['picUrl']=stripslashes($v['picUrl']);
+        }
+
+        return $picData;
+    }
 }

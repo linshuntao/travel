@@ -117,7 +117,9 @@
                         <li <?php if ($type == 4): ?>class="nav-current"<?php endif;?> role="presentation">
                             <a href="<?php echo Yii::app()->createUrl('ShowData/BaseData/picture/cityName/' . $cityName); ?>" title="精选图片">精选图片</a>
                         </li>
-                        <li role="presentation"><a href="#" title="著名景点">著名景点</a></li>
+                        <li <?php if ($type == 5): ?>class="nav-current"<?php endif;?> role="presentation">
+                            <a href="<?php echo Yii::app()->createUrl('ShowData/BaseData/sign/cityName/' . $cityName); ?>" title="著名景点">著名景点</a>
+                        </li>
 
                     </ul>
                 </div>
@@ -262,26 +264,78 @@ $this->widget('CLinkPager', ['pages' => $pages,
 
 
         <?php if ($type == 4 && $pictureData): ?>
-                <div style="border:1px solid black; margin: 1cm 1cm 1cm 1cm;height: 35cm">
-                    <div style="margin: 1cm 1cm 1cm 1cm";>
-                        <?php foreach ($pictureData as $key => $v): ?>
-                            <img width="234" height="234" style="margin:20px 0px 0px 2px" src="<?=$v['pic'];?>">
-                        <?php endforeach;?>
-                    </div>
-
+            <div style="border:1px solid black; margin: 1cm 1cm 1cm 1cm;height: 35cm">
+                <div style="margin: 1cm 1cm 1cm 1cm";>
+                    <?php foreach ($pictureData as $key => $v): ?>
+                        <img width="234" height="234" style="margin:20px 0px 0px 2px" src="<?=$v['pic'];?>">
+                    <?php endforeach;?>
                 </div>
 
+            </div>
             <div style="margin: 1cm 5cm 1cm 1cm">
                 <div class="col-md-12">
                     &nbsp;
                     <?php
-$this->widget('CLinkPager', ['pages' => $pages,
-    'header'                             => '',
-    'htmlOptions'                        => ['class' => 'pagination pagination-m'],
-    'selectedPageCssClass'               => 'active']);
-?>
+                    $this->widget('CLinkPager', ['pages' => $pages,
+                        'header'                             => '',
+                        'htmlOptions'                        => ['class' => 'pagination pagination-m'],
+                        'selectedPageCssClass'               => 'active']);
+                    ?>
                 </div>
             </div>
+        <?php endif;?>
+
+        <?php if ($type == 5 && $signData): ?>
+            <div class="form-group">
+                <label>请输入搜索词：</label>
+                <input type="text" id="searchContent" value="<?=($searchContent) ? $searchContent : '';?>" name="searchContent">
+                <input type="text" id="cityName" name="cityName" value="<?=($cityName) ? $cityName : '';?>" class="hidden">
+                <script language="javascript">
+                    function addParam()
+                    {
+                        var objA=document.getElementById("searchPic");
+                        objA.href="<?php echo Yii::app()->createUrl('ShowData/BaseData/sign/cityName/' . $cityName).'/searchContent/'; ?>"+document.getElementById("searchContent").value;
+                    }
+                </script>
+                <a id="searchPic" href="" onclick="addParam()"><input type="button" value="搜索"></a>
+            </div>
+            <div style="border:1px solid black; margin: 1cm 1cm 1cm 1cm;height: 68cm">
+                <div style="margin: 1cm 1cm 1cm 1cm";>
+                    <label class="control-label col-md-2">著名景点：</label>
+                    <?php foreach($signData as $v): ?>
+                        <a href="<?php echo Yii::app()->createUrl('ShowData/BaseData/sign/cityName/' . $cityName).'/searchTitle/'.$v['title']; ?>"> &nbsp;<?=$v['title'];?></a>
+                    <?php endforeach;?>
+                </div>
+                <?php if($signPicData!=''):?>
+                    <div style="margin: 1cm 1cm 1cm 1cm";>
+                        <div class="block part1" data-width="480" data-height="313">
+                            <?php foreach ($signPicData as $key => $v): ?>
+                                <img width="400" height="400" style="margin:20px 0px 0px 2px" src="<?=$v['picUrl'];?>" alt="<?=$v['picDesc'];?>">
+                                <div class="photo-label  clearfix">
+                                    <div class="desc-wrapper J_desc-wrapper">
+                                        <span class="photo-desc J_edit-desc"><span class="desc-word J_desc-word" title=""><?=$v['picDesc'];?>
+                                            </span>
+                                        </span>
+                                    </div>
+                                </div>
+                            <?php endforeach;?>
+                        </div>
+                    </div>
+                    <div style="margin: 1cm 5cm 1cm 1cm">
+                        <div class="col-md-12">
+                            &nbsp;
+                            <?php
+                            $this->widget('CLinkPager', ['pages' => $pages,
+                                'header'                             => '',
+                                'htmlOptions'                        => ['class' => 'pagination pagination-m'],
+                                'selectedPageCssClass'               => 'active']);
+                            ?>
+                        </div>
+                    </div>
+                <?php endif;?>
+
+            </div>
+
         <?php endif;?>
 
     </div>

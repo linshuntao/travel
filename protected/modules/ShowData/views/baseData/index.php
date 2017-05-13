@@ -301,10 +301,12 @@ $this->widget('CLinkPager', ['pages' => $pages,
             </div>
             <div style="border:1px solid black; margin: 1cm 1cm 1cm 1cm;height: 68cm">
                 <div style="margin: 1cm 1cm 1cm 1cm";>
-                    <label class="control-label col-md-2">著名景点：</label>
-                    <?php foreach($signData as $v): ?>
-                        <a href="<?php echo Yii::app()->createUrl('ShowData/BaseData/sign/cityName/' . $cityName).'/searchTitle/'.$v['title']; ?>"> &nbsp;<?=$v['title'];?></a>
-                    <?php endforeach;?>
+                    <label class="control-label col-md-2">常用搜索：</label>
+                    <div style="text-align: left">
+                        <?php foreach($signData as $v): ?>
+                            <a href="<?php echo Yii::app()->createUrl('ShowData/BaseData/sign/cityName/' . $cityName).'/searchTitle/'.$v['title']; ?>"> &nbsp;<?=$v['title'];?></a>
+                        <?php endforeach;?>
+                    </div>
                 </div>
                 <?php if($signPicData!=''):?>
                     <div style="margin: 1cm 1cm 1cm 1cm";>

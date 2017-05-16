@@ -12,47 +12,18 @@ class TravelCityData
         0 => 'red',
         1 => 'yellow',
         2 => "blue",
-        3 => 'green',
-        4 => 'black',
+        3=>'green',
+        4=>'black',
     ];
     public static function getCityBaseData($cityName)
     {
-        ini_set('memory_limit', '512M');
         $cityData = Common::getTableItem('viewdata', '*', "name like '%" . $cityName . "%'");
         $data     = Common::getTableItem('view', '*', "name like '%" . $cityName . "%'");
         Yii::app()->db->createCommand()->update('view', ['searchCount' => (int) $data['searchCount'] + 1], 'id=:id', [':id' => $data['id']]);
 
-        $month = ['01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12'];
-        foreach ($month as $v) {
-            $count                  = Common::getTableItem('remark', 'count(id) as count', 'location=\'' . $cityName . '\' AND remarkTime like \'%-' . $v . '-%\'');
-            $aveCount               = Common::getTableItem('remark', 'count(id) as count', 'remarkTime like \'%-' . $v . '-%\'');
-            $cityData['month'][]    = $count['count'];
-            $cityData['aveMonth'][] = (int) ($aveCount['count'] / 12);
-        }
+        //标签转成数组
+        $cityData['tags'] = explode(",", $cityData['tags']);
 
-        //arsort($cityData['month']);
-        $cityData['month']    = implode(',', $cityData['month']);
-        $cityData['aveMonth'] = implode(',', $cityData['aveMonth']);
-
-        $remarkText = Common::getTableList('remark', 'remarkText', "location like '%" . $cityName . "%'");
-
-        $content = '';
-        foreach ($remarkText as $v) {
-            $content .= strip_tags($v['remarkText']);
-        }
-
-        PhpAnalysis::$loadInit = false;
-        $pa                    = new PhpAnalysis('utf-8', 'utf-8', false);
-        $pa->LoadDict();
-        $pa->SetSource($content);
-        $pa->StartAnalysis(true);
-
-        $tags    = $pa->GetFinallyKeywords(20);
-        $tagsArr = explode(",", $tags);
-
-        $cityData['tags'] = $tagsArr;
-//        echo '<pre>';
-        //        var_dump($data);die;
         return $cityData;
     }
 
@@ -78,17 +49,17 @@ class TravelCityData
     public static function getRemarkData($data, $offset, $limit, $isCount = 0)
     {
         if ($isCount) {
-            if ($data['searchWord']) {
+            if($data['searchWord']){
                 $count = Common::getTableItem('remark', 'count(id) as count', "location like '%" . $data['cityName'] . "%' AND remarkText like '%" . $data['searchWord'] . "%'");
-            } else {
+            }else{
                 $count = Common::getTableItem('remark', 'count(id) as count', "location like '%" . $data['cityName'] . "%'");
             }
 
             return $count['count'];
         }
-        if ($data['searchWord']) {
+        if($data['searchWord']){
             $remarkData = Common::getTableList('remark', '*', "location like '%" . $data['cityName'] . "%' AND remarkText like '%" . $data['searchWord'] . "%'", [], 'highScore DESC', $limit, $offset);
-        } else {
+        }else{
             $remarkData = Common::getTableList('remark', '*', "location like '%" . $data['cityName'] . "%'", [], 'highScore DESC', $limit, $offset);
         }
 
@@ -119,5 +90,103 @@ class TravelCityData
         $data = Common::getTableList('view', '*', '', [], 'searchCount DESC', 5, 0);
 
         return $data;
+    }
+
+    public static function getSignData($cityName)
+    {
+        $signData=Common::getTableList('userpic','count(id) as count,title', "name like '%" . $cityName . "%' AND picDesc!='' AND title!=''",[],'','','','title');
+        $finData=[];
+        arsort($signData);
+        foreach($signData as $v){
+            if($v['count']>=50){
+                $finData[]=[
+                'title'=>$v['title'],
+                'count'=>$v['count'],
+                ];
+            }
+        }
+        return $finData;
+    }
+
+    public static function getSignPicData($data,$offset, $limit, $isCount = 0)
+    {
+        if($isCount){
+            $count=Common::getTableItem('userpic','count(id) as count',"name like '%" . $data['cityName'] . "%' AND title like '%" . $data['searchTitle'] . "%'");
+            return $count['count'];
+        }
+        $picData=Common::getTableList('userpic','*',"name like '%" . $data['cityName'] . "%' AND title like '%" . $data['searchTitle'] . "%'",[],'',$limit,$offset);
+        foreach($picData as $key=>$v){
+            $picData[$key]['picUrl']=stripslashes($v['picUrl']);
+        }
+
+        return $picData;
+    }
+
+    public static function getContentPicData($data,$offset, $limit, $isCount = 0)
+    {
+        if($isCount){
+            $count=Common::getTableItem('userpic','count(id) as count',"name like '%" . $data['cityName'] . "%' AND picDesc like '%" . $data['searchContent'] . "%'");
+            return $count['count'];
+        }
+        $picData=Common::getTableList('userpic','*',"name like '%" . $data['cityName'] . "%' AND picDesc like '%" . $data['searchContent'] . "%'",[],'',$limit,$offset);
+        foreach($picData as $key=>$v){
+            $picData[$key]['picUrl']=stripslashes($v['picUrl']);
+        }
+
+        return $picData;
+    }
+
+    public static function updateCityTag()
+    {
+        ini_set('memory_limit', '512M');
+        $cityName=Common::getTableList('view','id,name');
+        foreach($cityName as $key=>$v){
+            $remarkText = Common::getTableList('remark', 'remarkText', "location like '%" . $v['name'] . "%'");
+            $content = '';
+            foreach ($remarkText as $value) {
+                $content .= strip_tags($value['remarkText']);
+            }
+
+            PhpAnalysis::$loadInit = false;
+            $pa                    = new PhpAnalysis('utf-8', 'utf-8', false);
+            $pa->LoadDict();
+            $pa->SetSource($content);
+            $pa->StartAnalysis(true);
+
+            $tags    = $pa->GetFinallyKeywords(20);
+
+
+            Yii::app()->db->createCommand()->update('viewdata',['tags'=>$tags],'id='.$v['id']);
+            echo $key.' ';
+        }
+    }
+
+    public static function updateCityMonth()
+    {
+        ini_set('memory_limit', '512M');
+        $cityName=Common::getTableList('view','id,name');
+
+        $month = ['01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12'];
+
+        foreach($cityName as $key=>$value){
+            $cityData=[
+                'month'=>[],
+                'aveMonth'=>[],
+            ];
+            foreach ($month as $v) {
+                $count               = Common::getTableItem('remark', 'count(id) as count', 'location=\'' . $value['name'] . '\' AND remarkTime like \'%-' . $v . '-%\'');
+                $aveCount               = Common::getTableItem('remark', 'count(id) as count', 'remarkTime like \'%-' . $v . '-%\'');
+                $cityData['month'][] = $count['count'];
+                $cityData['aveMonth'][]=(int)($aveCount['count']/12);
+            }
+
+            $cityData['month']=implode(',',$cityData['month']);
+            $cityData['aveMonth']=implode(',',$cityData['aveMonth']);
+
+            Yii::app()->db->createCommand()->update('viewdata',['month'=>$cityData['month']],'id='.$value['id']);
+            Yii::app()->db->createCommand()->update('viewdata',['aveMonth'=> $cityData['aveMonth']],'id='.$value['id']);
+            echo $key.' ';
+        }
+
     }
 }

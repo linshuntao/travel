@@ -12,8 +12,8 @@ class TravelCityData
         0 => 'red',
         1 => 'yellow',
         2 => "blue",
-        3=>'green',
-        4=>'black',
+        3 => 'green',
+        4 => 'black',
     ];
     public static function getCityBaseData($cityName)
     {
@@ -24,15 +24,15 @@ class TravelCityData
 
         $month = ['01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12'];
         foreach ($month as $v) {
-            $count               = Common::getTableItem('remark', 'count(id) as count', 'location=\'' . $cityName . '\' AND remarkTime like \'%-' . $v . '-%\'');
+            $count                  = Common::getTableItem('remark', 'count(id) as count', 'location=\'' . $cityName . '\' AND remarkTime like \'%-' . $v . '-%\'');
             $aveCount               = Common::getTableItem('remark', 'count(id) as count', 'remarkTime like \'%-' . $v . '-%\'');
-            $cityData['month'][] = $count['count'];
-            $cityData['aveMonth'][]=(int)($aveCount['count']/12);
+            $cityData['month'][]    = $count['count'];
+            $cityData['aveMonth'][] = (int) ($aveCount['count'] / 12);
         }
 
         //arsort($cityData['month']);
-        $cityData['month']=implode(',',$cityData['month']);
-        $cityData['aveMonth']=implode(',',$cityData['aveMonth']);
+        $cityData['month']    = implode(',', $cityData['month']);
+        $cityData['aveMonth'] = implode(',', $cityData['aveMonth']);
 
         $remarkText = Common::getTableList('remark', 'remarkText', "location like '%" . $cityName . "%'");
 
@@ -78,17 +78,17 @@ class TravelCityData
     public static function getRemarkData($data, $offset, $limit, $isCount = 0)
     {
         if ($isCount) {
-            if($data['searchWord']){
+            if ($data['searchWord']) {
                 $count = Common::getTableItem('remark', 'count(id) as count', "location like '%" . $data['cityName'] . "%' AND remarkText like '%" . $data['searchWord'] . "%'");
-            }else{
+            } else {
                 $count = Common::getTableItem('remark', 'count(id) as count', "location like '%" . $data['cityName'] . "%'");
             }
 
             return $count['count'];
         }
-        if($data['searchWord']){
+        if ($data['searchWord']) {
             $remarkData = Common::getTableList('remark', '*', "location like '%" . $data['cityName'] . "%' AND remarkText like '%" . $data['searchWord'] . "%'", [], 'highScore DESC', $limit, $offset);
-        }else{
+        } else {
             $remarkData = Common::getTableList('remark', '*', "location like '%" . $data['cityName'] . "%'", [], 'highScore DESC', $limit, $offset);
         }
 

@@ -387,7 +387,7 @@ $this->widget('CLinkPager', ['pages' => $pages,
                 type: 'line'
             },
             title: {
-                text: '每月旅游人数'
+                text: '城市旅游热度曲线'
             },
             xAxis: {
                 categories: ['一月', '二月', '三月', '四月', '五月', '六月',

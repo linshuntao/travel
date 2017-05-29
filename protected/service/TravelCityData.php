@@ -177,7 +177,7 @@ class TravelCityData
                 $count               = Common::getTableItem('remark', 'count(id) as count', 'location=\'' . $value['name'] . '\' AND remarkTime like \'%-' . $v . '-%\'');
                 $aveCount               = Common::getTableItem('remark', 'count(id) as count', 'remarkTime like \'%-' . $v . '-%\'');
                 $cityData['month'][] = $count['count'];
-                $cityData['aveMonth'][]=(int)($aveCount['count']/12);
+                $cityData['aveMonth'][]=(int)($aveCount['count']/28);
             }
 
             $cityData['month']=implode(',',$cityData['month']);
@@ -185,8 +185,8 @@ class TravelCityData
 
             Yii::app()->db->createCommand()->update('viewdata',['month'=>$cityData['month']],'id='.$value['id']);
             Yii::app()->db->createCommand()->update('viewdata',['aveMonth'=> $cityData['aveMonth']],'id='.$value['id']);
+            echo '<br>';
             echo $key.' ';
         }
-
     }
 }
